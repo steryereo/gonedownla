@@ -52,7 +52,8 @@ export default async function Home() {
         <ul>
           {recentStatuses.rows.map(({ id, status, created_at }) => (
             <li key={id}>
-              {`${status} ${new Date(created_at).toLocaleString()}`}
+              <strong>{status}</strong>
+              {` ${new Date(created_at).toLocaleString()}`}
             </li>
           ))}
         </ul>
