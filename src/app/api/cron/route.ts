@@ -1,3 +1,5 @@
+import { revalidatePath } from "next/cache";
+
 import { sql } from "@vercel/postgres";
 
 import { getStatus } from "@/lib/getStatus";
@@ -29,6 +31,8 @@ export async function GET(req: Request) {
 
     const response =
       await sql`INSERT INTO statuses (status, created_at) VALUES (${status.status}, ${created_at});`;
+
+    revalidatePath("/");
 
     return Response.json(response);
   } catch (error) {

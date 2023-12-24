@@ -16,7 +16,7 @@ interface LiftStatus {
 }
 
 export async function getStatus() {
-  const response = await fetch(STATUS_URL);
+  const response = await fetch(STATUS_URL, { cache: "no-store" });
 
   if (!response.ok) {
     throw new Error(
