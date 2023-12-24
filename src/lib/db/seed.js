@@ -9,6 +9,7 @@ async function seedStatuses(client) {
     CREATE TABLE IF NOT EXISTS statuses (
       id SERIAL PRIMARY KEY,
       status VARCHAR(255) NOT NULL,
+      within_hours BOOLEAN,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
     `;
