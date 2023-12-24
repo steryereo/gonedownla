@@ -5,15 +5,16 @@ import { getStatus } from "@/lib/getStatus";
 function isAuthorized(req: Request) {
   if (process.env.NODE_ENV === "development") return true;
 
-  return (
-    req.headers.get("Authorization") === `Bearer ${process.env.CRON_SECRET}`
-  );
+  const authHeader =
+    req.headers.get("Authorization") || req.headers.get("authorization");
+
+  return authHeader === `Bearer ${process.env.CRON_SECRET}`;
 }
 
 export async function GET(req: Request) {
-  //   if (!isAuthorized(req)) {
-  //     return new Response("Unauthorized", { status: 401 });
-  //   }
+  if (!isAuthorized(req)) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
   try {
     const status = await getStatus();
