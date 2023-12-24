@@ -1,7 +1,11 @@
 const { db } = require("@vercel/postgres");
 
-async function seed() {
-  const createTable = await sql`
+// Run this script locally to set up the database
+// TODO: find a less "manual" database management solution
+
+async function seedStatuses(client) {
+  try {
+    const createTable = await client.sql`
     CREATE TABLE IF NOT EXISTS statuses (
       id SERIAL PRIMARY KEY,
       status VARCHAR(255) NOT NULL,
@@ -9,11 +13,29 @@ async function seed() {
     );
     `;
 
-  console.log(`Created "statuses" table`);
+    console.log(`Created "statuses" table`);
 
-  return {
-    createTable,
-  };
+    return {
+      createTable,
+    };
+  } catch (error) {
+    console.error("Error seeding statuses:", error);
+
+    throw error;
+  }
 }
 
-module.exports = { seed };
+async function main() {
+  const client = await db.connect();
+
+  await seedStatuses(client);
+
+  await client.end();
+}
+
+main().catch((err) => {
+  console.error(
+    "An error occurred while attempting to seed the database:",
+    err
+  );
+});
