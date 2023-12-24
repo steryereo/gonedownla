@@ -2,17 +2,26 @@ import { sql } from "@vercel/postgres";
 
 import styles from "./page.module.css";
 import { getStatus } from "@/lib/getStatus";
+import BehindTheScenesInfo from "@/components/BehindTheScenesInfo";
 
-function getRecentStatuses() {
-  return sql`SELECT * FROM statuses ORDER BY created_at DESC LIMIT 10`;
+async function getRecentStatuses() {
+  const result =
+    await sql`SELECT * FROM statuses ORDER BY created_at DESC LIMIT 10`;
+
+  return result.rows;
 }
 
-function getCount() {
-  return sql`SELECT COUNT(*) FROM statuses`;
+async function getCount() {
+  const result = await sql`SELECT COUNT(*) FROM statuses`;
+
+  return result.rows[0].count;
 }
 
-function getFirstStatusDate() {
-  return sql`SELECT created_at FROM statuses ORDER BY created_at ASC LIMIT 1`;
+async function getFirstStatusDate() {
+  const result =
+    await sql`SELECT created_at FROM statuses ORDER BY created_at ASC LIMIT 1`;
+
+  return result.rows[0].created_at;
 }
 
 export default async function Home() {
@@ -34,30 +43,11 @@ export default async function Home() {
           ✨{currentStatus.status}✨
         </span>
       </h2>
-      <section>
-        <p>
-          {`We have currently collected ${
-            count.rows[0].count
-          } Base to Base statuses (every 5 minutes since ${new Date(
-            firstStatusDate.rows[0].created_at
-          ).toLocaleString()}).`}
-        </p>
-        <p>
-          We will use these to figure out how much of the scheduled time the
-          Base to Base is down
-        </p>
-      </section>
-      <section>
-        <h3>Here are some recent statuses</h3>
-        <ul>
-          {recentStatuses.rows.map(({ id, status, created_at }) => (
-            <li key={id}>
-              <strong>{status}</strong>
-              {` ${new Date(created_at).toLocaleString()}`}
-            </li>
-          ))}
-        </ul>
-      </section>
+      <BehindTheScenesInfo
+        count={count}
+        firstStatusDate={firstStatusDate}
+        statuses={recentStatuses}
+      />
     </main>
   );
 }
