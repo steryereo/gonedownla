@@ -11,9 +11,9 @@ function isAuthorized(req: Request) {
 }
 
 export async function GET(req: Request) {
-  if (!isAuthorized(req)) {
-    return new Response("Unauthorized", { status: 401 });
-  }
+  //   if (!isAuthorized(req)) {
+  //     return new Response("Unauthorized", { status: 401 });
+  //   }
 
   try {
     const status = await getStatus();
