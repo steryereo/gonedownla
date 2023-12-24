@@ -4,7 +4,7 @@ import styles from "./page.module.css";
 import { getStatus } from "@/lib/getStatus";
 
 function getRecentStatuses() {
-  return sql`SELECT * FROM statuses ORDER BY "createdAt" DESC`;
+  return sql`SELECT * FROM statuses ORDER BY "created_at" DESC`;
 }
 
 function getCount() {

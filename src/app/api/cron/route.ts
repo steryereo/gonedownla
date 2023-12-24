@@ -20,8 +20,14 @@ export async function GET(req: Request) {
 
     if (!status) return Response.error();
 
+    // NOTE: if this timestamp isn't specified explicitly,
+    // the insert command updates instead of inserting.
+    // This may be a quirk of @vercel/postgres
+    // TODO: explore further or go elsewhere
+    const created_at = new Date().toISOString();
+
     const response =
-      await sql`INSERT INTO statuses (status) VALUES (${status.status});`;
+      await sql`INSERT INTO statuses (status, created_at) VALUES (${status.status}, ${created_at});`;
 
     return Response.json(response);
   } catch (error) {
