@@ -15,8 +15,16 @@ function getTimeInTahoe(date = new Date()) {
 function isWithinOperatingHours(now: Date) {
   const nowLocal = getTimeInTahoe(now);
 
-  const openToday = set(getTimeInTahoe(), { hours: 8, minutes: 45 });
-  const closeToday = set(getTimeInTahoe(), { hours: 16, minutes: 0 });
+  const openToday = set(getTimeInTahoe(), {
+    hours: 8,
+    minutes: 45,
+    seconds: 0,
+  });
+  const closeToday = set(getTimeInTahoe(), {
+    hours: 16,
+    minutes: 0,
+    seconds: 0,
+  });
 
   return isWithinInterval(nowLocal, { start: openToday, end: closeToday });
 }
