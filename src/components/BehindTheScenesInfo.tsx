@@ -6,21 +6,24 @@ export default function BehindTheScenesInfo({
   count,
   firstStatusDate,
   statuses,
+  openCount,
+  withinHoursCount,
 }: {
   count: number;
   firstStatusDate: string;
   statuses: QueryResultRow[];
+  openCount: number;
+  withinHoursCount: number;
 }) {
   return (
     <>
       <section>
-        <p> We have currently collected {count} Base to Base statuses</p>
         <p>
-          (every 5 minutes since {new Date(firstStatusDate).toLocaleString()})
-        </p>
-        <p>
-          We will use these to figure out how much of the scheduled time the
-          Base to Base is down
+          {" "}
+          collected {count} Base to Base statuses (every 5 minutes since{" "}
+          {new Date(firstStatusDate).toLocaleString()}). {withinHoursCount}{" "}
+          within normal operating hours. For {openCount} of those, the Base to
+          Base has been open
         </p>
       </section>
       <section>
