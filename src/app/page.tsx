@@ -38,7 +38,7 @@ async function getWithinHoursCount() {
 
 async function getOpenCount() {
   const result =
-    await sql`SELECT COUNT(*) FROM statuses WHERE within_hours = TRUE AND status = 'Open'`;
+    await sql`SELECT COUNT(*) FROM statuses WHERE within_hours = TRUE AND status IN ('Open', 'No Offload at KT-22')`;
 
   return getCountFromQueryResult(result);
 }
