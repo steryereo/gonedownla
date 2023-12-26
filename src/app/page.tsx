@@ -72,7 +72,7 @@ export default async function Home() {
     <main className={styles.main}>
       <h2>
         The Base to Base is currently{" "}
-        <span color={currentStatus.statusColour}>
+        <span style={{ color: currentStatus.statusColour }}>
           ✨{currentStatus.status}✨
         </span>
       </h2>
