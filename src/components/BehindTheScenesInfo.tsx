@@ -32,8 +32,8 @@ export default function BehindTheScenesInfo({
             <p>
               collected {count} Base to Base statuses (every 5 minutes since{" "}
               {new Date(firstStatusDate).toLocaleString()}). {withinHoursCount}{" "}
-              within normal operating hours. For {openCount} of those, the Base
-              to Base has been open
+              within normal operating hours. the Base to Base has been open for{" "}
+              {openCount} of those
             </p>
           </section>
           <section>
