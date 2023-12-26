@@ -1,4 +1,4 @@
-import { sql } from "@vercel/postgres";
+import { QueryResult, sql } from "@vercel/postgres";
 
 import styles from "./page.module.css";
 import { getStatus } from "@/lib/getStatus";
@@ -11,10 +11,14 @@ async function getRecentStatuses() {
   return result.rows;
 }
 
+function getCountFromQueryResult(result: QueryResult) {
+  return result.rows[0].count;
+}
+
 async function getCount() {
   const result = await sql`SELECT COUNT(*) FROM statuses`;
 
-  return result.rows[0].count;
+  return getCountFromQueryResult(result);
 }
 
 async function getFirstStatusDate() {
@@ -29,14 +33,14 @@ async function getWithinHoursCount() {
   const result =
     await sql`SELECT COUNT(*) FROM statuses WHERE within_hours = TRUE`;
 
-  return result.rows[0].count;
+  return getCountFromQueryResult(result);
 }
 
 async function getOpenCount() {
   const result =
     await sql`SELECT COUNT(*) FROM statuses WHERE within_hours = TRUE AND status = 'Open'`;
 
-  return result.rows[0].count;
+  return getCountFromQueryResult(result);
 }
 
 export default async function Home() {
@@ -58,6 +62,8 @@ export default async function Home() {
 
   if (typeof currentStatus === "undefined") return <span>error</span>;
 
+  const percentUptime = Math.round((openCount / withinHoursCount) * 100);
+
   return (
     <main className={styles.main}>
       <h2>
@@ -66,7 +72,7 @@ export default async function Home() {
           ✨{currentStatus.status}✨
         </span>
       </h2>
-      <h2>{`${(openCount / withinHoursCount) * 100}% Uptime`}</h2>
+      <h2>{`${percentUptime}% Uptime`}</h2>
       <BehindTheScenesInfo
         count={count}
         withinHoursCount={withinHoursCount}
