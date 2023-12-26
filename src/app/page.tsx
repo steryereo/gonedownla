@@ -43,6 +43,10 @@ async function getOpenCount() {
   return getCountFromQueryResult(result);
 }
 
+export const metadata = {
+  title: "GoneDownLa",
+};
+
 export default async function Home() {
   const [
     currentStatus,
