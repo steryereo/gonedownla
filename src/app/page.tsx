@@ -76,7 +76,7 @@ export default async function Home() {
           ✨{currentStatus.status}✨
         </span>
       </h2>
-      <h2>{`${(openCount / withinHoursCount) * 100}% Uptime`}</h2>
+      <h2>{`${percentUptime}% Uptime`}</h2>
       <BehindTheScenesInfo
         count={count}
         withinHoursCount={withinHoursCount}
