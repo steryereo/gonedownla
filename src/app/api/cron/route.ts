@@ -13,20 +13,22 @@ function getTimeInTahoe(date = new Date()) {
 }
 
 function isWithinOperatingHours(now: Date) {
-  const nowLocal = getTimeInTahoe(now);
+  return false; // TODO: temporarily disabled for end of season
 
-  const openToday = set(getTimeInTahoe(), {
-    hours: 8,
-    minutes: 45,
-    seconds: 0,
-  });
-  const closeToday = set(getTimeInTahoe(), {
-    hours: 16,
-    minutes: 0,
-    seconds: 0,
-  });
+  // const nowLocal = getTimeInTahoe(now);
 
-  return isWithinInterval(nowLocal, { start: openToday, end: closeToday });
+  // const openToday = set(getTimeInTahoe(), {
+  //   hours: 8,
+  //   minutes: 45,
+  //   seconds: 0,
+  // });
+  // const closeToday = set(getTimeInTahoe(), {
+  //   hours: 16,
+  //   minutes: 0,
+  //   seconds: 0,
+  // });
+
+  // return isWithinInterval(nowLocal, { start: openToday, end: closeToday });
 }
 
 function isAuthorized(req: Request) {
