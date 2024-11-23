@@ -71,10 +71,7 @@ export default async function Home() {
   return (
     <main className={styles.main}>
       <h2>
-        The Base to Base is currently{" "}
-        <span style={{ color: currentStatus.statusColour }}>
-          ✨{currentStatus.status}✨
-        </span>
+        The Base to Base is currently <span>✨{currentStatus.Status}✨</span>
       </h2>
       <h2>{`${percentUptime}% Uptime`}</h2>
       <BehindTheScenesInfo
