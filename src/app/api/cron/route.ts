@@ -64,7 +64,7 @@ export async function GET(req: Request) {
     const within_hours = isWithinOperatingHours(now);
 
     const response =
-      await sql`INSERT INTO statuses (status, created_at, within_hours) VALUES (${status.status}, ${created_at}, ${within_hours});`;
+      await sql`INSERT INTO statuses (status, created_at, within_hours) VALUES (${status.StatusEnglish}, ${created_at}, ${within_hours});`;
 
     revalidatePath("/");
 
