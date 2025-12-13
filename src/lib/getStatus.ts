@@ -1,5 +1,5 @@
 const BASE_TO_BASE_ID = 849;
-const MOUNTAIN_AREA_ID = 199;
+const MOUNTAIN_AREA_ID = 209;
 // const STATUS_URL = "https://vicomap-cdn.resorts-interactive.com/api/maps/1446";
 const STATUS_URL = "https://mtnpowder.com/feed?resortId=61";
 
@@ -71,12 +71,14 @@ export async function getStatus() {
       `Failed to fetch status: ${response.status} ${response.statusText}`
     );
   }
-
+  
   const data: ResponseData = await response.json();
 
+  
   const area = data.MountainAreas.find(
     (mountainArea: MountainArea) => mountainArea.Id === MOUNTAIN_AREA_ID
   );
+  console.log("area", area);
 
   if (!area) throw new Error("mountain area not found");
 
