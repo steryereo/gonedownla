@@ -9,10 +9,6 @@ import {
   getOpenCount,
 } from "@/db/query";
 
-export const metadata = {
-  title: "GoneDownLa",
-};
-
 export default async function Home() {
   const [
     currentStatus,
