@@ -2,9 +2,8 @@ import { isWithinInterval, set } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import { revalidatePath } from "next/cache";
 
-import { sql } from "@vercel/postgres";
-
 import { getStatus } from "@/lib/getStatus";
+import { insertStatus } from "@/db/query";
 
 const TAHOE_TIMEZONE = "America/Los_Angeles";
 
@@ -52,25 +51,16 @@ export async function GET(req: Request) {
 
     const now = new Date();
 
-    // TODO: uncomment this after verifying that it works in prod
-    // if (!isWithinOperatingHours(now)) {
-    //   return new Response("Outside of normal operation time, nothing added");
-    // }
-
-    // NOTE: if this timestamp isn't specified explicitly,
-    // the insert command replaces existing rows instead of inserting a new one.
-    // This may be a quirk of @vercel/postgres
-    // TODO: explore further or go elsewhere
-    const created_at = now.toISOString();
-
     const within_hours = isWithinOperatingHours(now);
 
-    const response =
-      await sql`INSERT INTO statuses (status, created_at, within_hours) VALUES (${status.StatusEnglish}, ${created_at}, ${within_hours});`;
+    const insertedStatus = await insertStatus(
+      status.StatusEnglish,
+      within_hours
+    );
 
     revalidatePath("/");
 
-    return Response.json(response);
+    return Response.json(insertedStatus);
   } catch (error) {
     return Response.json({ error }, { status: 500 });
   }

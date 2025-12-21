@@ -1,7 +1,7 @@
 "use client";
 
-import type { QueryResultRow } from "@vercel/postgres";
 import { useState } from "react";
+import type { SelectStatus } from "@/db/schema";
 
 import styles from "../app/page.module.css";
 
@@ -14,7 +14,7 @@ export default function BehindTheScenesInfo({
 }: {
   count: number;
   firstStatusDate: string;
-  statuses: QueryResultRow[];
+  statuses: SelectStatus[];
   openCount: number;
   withinHoursCount: number;
 }) {
@@ -42,7 +42,7 @@ export default function BehindTheScenesInfo({
               {statuses.map(({ id, status, created_at }) => (
                 <li key={id}>
                   <strong>{status}</strong>
-                  {` ${new Date(created_at).toLocaleString()}`}
+                  {created_at ? ` ${new Date(created_at).toLocaleString()}` : ""}
                 </li>
               ))}
             </ul>
