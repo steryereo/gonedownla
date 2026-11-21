@@ -1,30 +1,14 @@
 import styles from "./page.module.css";
 import { getStatus } from "@/lib/getStatus";
 import BehindTheScenesInfo from "@/components/BehindTheScenesInfo";
-import {
-  getRecentStatuses,
-  getCount,
-  getFirstStatusDate,
-  getWithinHoursCount,
-  getOpenCount,
-} from "@/db/query";
+import { getRecentStatuses, getUptimeStats } from "@/db/query";
 
 export default async function Home() {
   const [
     currentStatus,
     recentStatuses,
-    count,
-    firstStatusDate,
-    withinHoursCount,
-    openCount,
-  ] = await Promise.all([
-    getStatus(),
-    getRecentStatuses(),
-    getCount(),
-    getFirstStatusDate(),
-    getWithinHoursCount(),
-    getOpenCount(),
-  ]);
+    { count, firstStatusDate, withinHoursCount, openCount },
+  ] = await Promise.all([getStatus(), getRecentStatuses(), getUptimeStats()]);
 
   if (typeof currentStatus === "undefined") return <span>error</span>;
 
