@@ -1,4 +1,4 @@
-import { count, desc, eq, and, inArray, min, sql } from "drizzle-orm";
+import { count, desc, eq, and, inArray, min, notIlike, sql } from "drizzle-orm";
 import { db } from "./index";
 import { statuses, type SelectStatus } from "./schema";
 
@@ -21,7 +21,12 @@ export interface UptimeStats {
 }
 
 export async function getUptimeStats(): Promise<UptimeStats> {
-  const withinHours = eq(statuses.within_hours, true);
+  // "scheduled" means the lift hasn't reached its opening time yet (e.g. the
+  // 8:45 poll most mornings, and Friday's later start), so it isn't downtime.
+  const withinHours = and(
+    eq(statuses.within_hours, true),
+    notIlike(statuses.status, "scheduled")
+  );
   const isOpen = and(withinHours, inArray(statuses.status, OPEN_STATUSES));
 
   const [result] = await db
