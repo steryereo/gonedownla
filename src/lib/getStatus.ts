@@ -14,7 +14,7 @@ interface MountainArea {
   Lifts: LiftStatus[];
 }
 
-interface LiftStatus {
+export interface LiftStatus {
   Id: 849;
   Name: string;
   MountainAreaName: string;
