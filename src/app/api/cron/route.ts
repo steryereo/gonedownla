@@ -1,32 +1,8 @@
-import { isWithinInterval, set } from "date-fns";
-import { utcToZonedTime } from "date-fns-tz";
 import { revalidatePath } from "next/cache";
 
 import { getStatus } from "@/lib/getStatus";
+import { isWithinOperatingHours } from "@/lib/operatingHours";
 import { insertStatus } from "@/db/query";
-
-const TAHOE_TIMEZONE = "America/Los_Angeles";
-
-function getTimeInTahoe(date = new Date()) {
-  return utcToZonedTime(date.toISOString(), TAHOE_TIMEZONE);
-}
-
-function isWithinOperatingHours(now: Date) {
-  const nowLocal = getTimeInTahoe(now);
-
-  const openToday = set(getTimeInTahoe(), {
-    hours: 8,
-    minutes: 45,
-    seconds: 0,
-  });
-  const closeToday = set(getTimeInTahoe(), {
-    hours: 16,
-    minutes: 0,
-    seconds: 0,
-  });
-
-  return isWithinInterval(nowLocal, { start: openToday, end: closeToday });
-}
 
 function isAuthorized(req: Request) {
   if (process.env.NODE_ENV === "development") return true;
@@ -47,9 +23,7 @@ export async function GET(req: Request) {
 
     if (!status) return Response.error();
 
-    const now = new Date();
-
-    const within_hours = isWithinOperatingHours(now);
+    const within_hours = isWithinOperatingHours(new Date(), status);
 
     const insertedStatus = await insertStatus(
       status.StatusEnglish,
