@@ -44,7 +44,13 @@ export async function getOpenCount(): Promise<number> {
     .where(
       and(
         eq(statuses.within_hours, true),
-        inArray(statuses.status, ["Open", "No Offload at KT-22"])
+        // The feed switched from sentence case to snake_case in Nov 2024
+        inArray(statuses.status, [
+          "Open",
+          "No Offload at KT-22",
+          "open",
+          "no_offload_at_kt22",
+        ])
       )
     );
   
